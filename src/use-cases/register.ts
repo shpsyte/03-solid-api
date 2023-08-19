@@ -29,15 +29,11 @@ export class RegisterUseCase {
     email,
     password,
   }: RegsiterUseCaseRequest): Promise<
-    Omit<Prisma.UserCreateInput, 'password_hash'>
+    Pick<Prisma.UserCreateInput, 'id' | 'email'>
   > {
     const pwdHash = await hash(password, 6)
 
-    let user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    })
+    let user = await this.repository.findByEmail(email)
 
     if (!user) {
       user = await this.repository.create({
@@ -47,12 +43,12 @@ export class RegisterUseCase {
       })
     }
 
-    // return user but omit password_hash
+    // delete the property password_hash from the user object
+    // to not return it in the response
+
     return {
-      id: user?.id,
-      name: user?.name ?? '',
-      email: user?.email ?? '',
-      created_at: user?.created_at ?? '',
+      email: user.email,
+      id: user.id,
     }
   }
 }
