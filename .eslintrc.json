@@ -4,5 +4,6 @@
   ],
   "rules": {
     "camelcase" : "off"
+    
   }
 }

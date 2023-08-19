@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { IUserRepository } from '@/repositories/users-repository'
 import { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
+import { UserAlreadyExistsError } from './errors/user-already-exists'
 
 type RegsiterUseCaseRequest = {
   name: string
@@ -33,22 +34,16 @@ export class RegisterUseCase {
   > {
     const pwdHash = await hash(password, 6)
 
-    let user = await this.repository.findByEmail(email)
+    const user = await this.repository.findByEmail(email)
 
-    if (!user) {
-      user = await this.repository.create({
-        name,
-        email,
-        password_hash: pwdHash,
-      })
+    if (user) {
+      throw new UserAlreadyExistsError()
     }
 
-    // delete the property password_hash from the user object
-    // to not return it in the response
-
-    return {
-      email: user.email,
-      id: user.id,
-    }
+    return await this.repository.create({
+      name,
+      email,
+      password_hash: pwdHash,
+    })
   }
 }
