@@ -1,4 +1,3 @@
-import { prisma } from '@/lib/prisma'
 import { IUserRepository } from '@/repositories/users-repository'
 import { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
@@ -32,7 +31,7 @@ export class RegisterUseCase {
   }: RegsiterUseCaseRequest): Promise<
     Pick<Prisma.UserCreateInput, 'id' | 'email'>
   > {
-    const pwdHash = await hash(password, 6)
+    const pwdHash = await hassh(password, 6)
 
     const user = await this.repository.findByEmail(email)
 

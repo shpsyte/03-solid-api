@@ -8,7 +8,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     name: z.string(),
     email: z.string(),
-    password: z.string().min(6),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
   })
 
   const { name, email, password } = registerBodySchema.parse(request.body)
@@ -22,13 +22,14 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       email,
       password,
     })
-  } catch (error) {
-    if (error instanceof UserAlreadyExistsError) {
+  } catch (err) {
+    if (err instanceof UserAlreadyExistsError) {
       return reply.code(409).send({
-        message: error.message,
+        message: err.message,
       })
     }
-    return reply.code(500).send() // TODO: improve this error
+
+    throw err
   }
 
   return reply.code(200).send({
