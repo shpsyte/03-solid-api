@@ -31,7 +31,7 @@ export class RegisterUseCase {
   }: RegsiterUseCaseRequest): Promise<
     Pick<Prisma.UserCreateInput, 'id' | 'email'>
   > {
-    const pwdHash = await hassh(password, 6)
+    const pwdHash = await hash(password, 6)
 
     const user = await this.repository.findByEmail(email)
 
