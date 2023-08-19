@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { PrismaUserRepository } from '@/repositories/prisma-user-repository'
+import { IUserRepository } from '@/repositories/users-repository'
 import { Prisma } from '@prisma/client'
 import { hash } from 'bcryptjs'
 
@@ -20,7 +20,7 @@ type RegsiterUseCaseRequest = {
 // }
 
 export class RegisterUseCase {
-  constructor(private repository: any) {
+  constructor(private repository: IUserRepository) {
     this.repository = repository
   }
 
