@@ -4,7 +4,7 @@
   "description": "GymPass style app.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "concurrently --kill-others \"tsx watch src/server.ts\"",
     "build": "tsup src --out-dir build",
     "start": "node build/server.js",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
@@ -23,6 +23,9 @@
   },
   "dependencies": {
     "@prisma/client": "5.1.1",
+    "@types/bcryptjs": "2.4.2",
+    "bcryptjs": "2.4.3",
+    "concurrently": "8.2.0",
     "dotenv": "16.3.1",
     "fastify": "4.21.0",
     "zod": "3.22.1"
