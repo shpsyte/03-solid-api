@@ -1,11 +1,8 @@
-import { it, expect, test, describe } from 'vitest'
+import { it, expect, describe } from 'vitest'
 import { RegisterUseCase } from '@/use-cases/register'
 import { compare } from 'bcryptjs'
 import { InMemoryRepository } from '@/repositories/in-memory/in-memory-repository'
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists'
-test('just a test => ', () => {
-  expect(1 + 1).toBe(2) //
-})
 
 describe('Register User', () => {
   it('should be able to create a user', async () => {
