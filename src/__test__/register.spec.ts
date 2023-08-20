@@ -29,8 +29,6 @@ describe('Register User', () => {
     }
 
     expect(resp).toEqual(output)
-
-    console.log(resp)
   })
 
   it('should hash user password upon registration', async () => {

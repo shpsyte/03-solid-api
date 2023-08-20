@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "lint": "eslint"
   },
@@ -20,6 +21,7 @@
     "@rocketseat/eslint-config": "2.1.0",
     "@types/node": "20.5.0",
     "@vitest/coverage-v8": "0.34.2",
+    "@vitest/ui": "0.34.2",
     "prisma": "5.1.1",
     "tsup": "7.2.0",
     "tsx": "3.12.7",
