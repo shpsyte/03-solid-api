@@ -14,13 +14,16 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { name, email, password } = registerBodySchema.parse(request.body)
 
   const registerUseCase = new RegisterUseCase(new PrismaUserRepository())
-  let user = null
 
   try {
-    user = await registerUseCase.execute({
+    const user = await registerUseCase.execute({
       name,
       email,
       password,
+    })
+    return reply.code(200).send({
+      message: 'Customer create sussefly',
+      user,
     })
   } catch (err) {
     if (err instanceof UserAlreadyExistsError) {
@@ -31,9 +34,4 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     throw err
   }
-
-  return reply.code(200).send({
-    message: 'Customer create sussefly',
-    user,
-  })
 }
