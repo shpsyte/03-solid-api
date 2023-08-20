@@ -47,6 +47,7 @@ describe('Register User', () => {
 
     expect(output).toBe(true)
   })
+
   it('should not able to create same email', async () => {
     const userRepository = new InMemoryRepository()
     const registerUseCase = new RegisterUseCase(userRepository)
@@ -63,6 +64,6 @@ describe('Register User', () => {
       password: '123456',
     })
 
-    expect(() => resp).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    await expect(() => resp).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
 })
