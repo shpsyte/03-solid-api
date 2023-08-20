@@ -5,6 +5,11 @@ import crypto from 'node:crypto'
 export class InMemoryRepository implements IUserRepository {
   public users: User[] = []
 
+  async findById(userId: string): Promise<User | null> {
+    const user = this.users.find((user) => user.id === userId)
+    return user || null
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = this.users.find((user) => user.email === email)
     return user || null
