@@ -1,5 +1,5 @@
 import { it, expect, describe, beforeEach } from 'vitest'
-import { InMemoryRepository } from '@/repositories/in-memory/in-memory-repository'
+import { InMemoryRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { hash } from 'bcryptjs'
 import { GetUserProfileUseCase } from '@/use-cases/get-user-profile'
 import { ApiError } from '@/use-cases/errors/api-error'

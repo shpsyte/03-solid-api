@@ -7,15 +7,20 @@ type AuthenticateUseCaseRequest = {
   password: string
 }
 
+type AuthenticateUseCaseResponse = {
+  user: {
+    id: string
+    name: string
+  }
+}
+
 export class AuthenticateUseCase {
   constructor(private repository: IUserRepository) {}
 
-  async execute({ email, password }: AuthenticateUseCaseRequest): Promise<{
-    user: {
-      id: string
-      name: string
-    }
-  }> {
+  async execute({
+    email,
+    password,
+  }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     // buscar o usuario pelo email
     const user = await this.repository.findByEmail(email)
     const doesPasswordMatch = await compare(password, user?.password_hash || '')
