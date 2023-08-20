@@ -1,14 +1,26 @@
 import { it, expect, describe, afterEach, beforeEach, vi } from 'vitest'
 import { CheckInUserCase } from '@/use-cases/check-in'
 import { InMemoryCheckInRepository } from '@/repositories/in-memory/in-memory-checkin-repository'
+import { InMemoryGymRepository } from '@/repositories/in-memory/in-memory-gym-repository'
+import { Decimal } from '@prisma/client/runtime/library'
 
 describe('Register User', () => {
   let checkInRepository: InMemoryCheckInRepository
+  let gymRepository: InMemoryGymRepository
   let sut: CheckInUserCase
 
   beforeEach(() => {
     checkInRepository = new InMemoryCheckInRepository()
-    sut = new CheckInUserCase(checkInRepository)
+    gymRepository = new InMemoryGymRepository()
+    sut = new CheckInUserCase(checkInRepository, gymRepository)
+    gymRepository.items.push({
+      id: 'gym-01',
+      description: 'Academia 01',
+      latitude: new Decimal(49.2168449),
+      longitude: new Decimal(-122.9386039),
+      phone: '123456789',
+      title: 'Academia 01',
+    })
 
     vi.useFakeTimers()
   })
@@ -18,15 +30,14 @@ describe('Register User', () => {
   })
 
   it('should be able to create a check in ', async () => {
-    const input = {
-      gymId: 'gym-01',
-      userId: 'user-01',
-    }
-
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0))
 
-    const { checkIn } = await sut.execute(input)
-    console.log(checkIn)
+    const { checkIn } = await sut.execute({
+      gymId: 'gym-01',
+      userId: 'user-01',
+      userLatitude: 49.2168449,
+      userLongitude: -122.9386039,
+    })
 
     expect(checkIn.id).toEqual(expect.any(String))
   })
@@ -37,7 +48,8 @@ describe('Register User', () => {
     const input = {
       gymId: 'gym-01',
       userId: 'user-01',
-      validated_at: new Date(),
+      userLatitude: 49.2168449,
+      userLongitude: -122.9386039,
     }
 
     const { checkIn } = await sut.execute(input)
@@ -63,6 +75,8 @@ describe('Register User', () => {
     await sut.execute({
       gymId: 'gym-01',
       userId: 'user-01',
+      userLatitude: 49.2168449,
+      userLongitude: -122.9386039,
     })
 
     // second check in
@@ -70,6 +84,8 @@ describe('Register User', () => {
       sut.execute({
         gymId: 'gym-01',
         userId: 'user-01',
+        userLatitude: 49.2168449,
+        userLongitude: -122.9386039,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -80,6 +96,8 @@ describe('Register User', () => {
     await sut.execute({
       gymId: 'gym-01',
       userId: 'user-01',
+      userLatitude: 49.2168449,
+      userLongitude: -122.9386039,
     })
 
     vi.setSystemTime(new Date(2022, 0, 21, 8, 0))
@@ -89,6 +107,8 @@ describe('Register User', () => {
       sut.execute({
         gymId: 'gym-01',
         userId: 'user-01',
+        userLatitude: 49.2168449,
+        userLongitude: -122.9386039,
       }),
     ).resolves.toBeTruthy()
   })
