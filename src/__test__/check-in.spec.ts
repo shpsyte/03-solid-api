@@ -112,4 +112,24 @@ describe('Register User', () => {
       }),
     ).resolves.toBeTruthy()
   })
+
+  it('should not be able to checkin out of X distant friom the gym ', async () => {
+    gymRepository.items.push({
+      id: 'gym-02',
+      description: 'Academia 01',
+      latitude: new Decimal(49.205126),
+      longitude: new Decimal(-122.8362939),
+      phone: '123456789',
+      title: 'Academia 01',
+    })
+
+    await expect(
+      sut.execute({
+        gymId: 'gym-02',
+        userId: 'user-01',
+        userLatitude: 49.2168449,
+        userLongitude: -122.9386039,
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
 })

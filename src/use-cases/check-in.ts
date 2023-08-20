@@ -2,6 +2,7 @@ import { CheckIn } from '@prisma/client'
 import { ICheckInRepository } from '@/repositories/check-in-repository'
 import { IGymRepository } from '@/repositories/gym-repository'
 import { ApiError } from './errors/api-error'
+import { getDistanceBetweenTwoCoordinates } from '@/utils/get-distance-between-two-coordenates'
 
 type CheckInCaseRequest = {
   userId: string
@@ -33,9 +34,22 @@ export class CheckInUserCase {
     }
 
     // caclulate distance between user and gym
+    const distance = getDistanceBetweenTwoCoordinates(
+      {
+        latitude: userLatitude,
+        longitude: userLongitude,
+      },
+      {
+        latitude: gym.latitude?.toNumber(),
+        longitude: gym.longitude.toNumber(),
+      },
+    )
 
-    // if distance is greater than 100 meters
-    // throw new ApiError('User is not close enough to check in')
+    const maxDistanceInKm = 0.1
+
+    if (distance > maxDistanceInKm) {
+      throw new ApiError('User is too far from gym')
+    }
 
     const checkInSameday = await this.checkInRepository.findByUserIdOnDate(
       userId,
