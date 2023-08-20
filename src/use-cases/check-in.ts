@@ -19,6 +19,15 @@ export class CheckInUserCase {
     gymId,
     validated_at,
   }: CheckInCaseRequest): Promise<CheckInCaseResponse> {
+    const checkInSameday = await this.checkInRepository.findByUserIdOnDate(
+      userId,
+      new Date(),
+    )
+
+    if (checkInSameday) {
+      throw new Error('User already checked in today')
+    }
+
     const checkIn = await this.checkInRepository.create({
       gym_id: gymId,
       user_id: userId,
