@@ -3,6 +3,7 @@ import { ICheckInRepository } from '@/repositories/check-in-repository'
 import { IGymRepository } from '@/repositories/gym-repository'
 import { ApiError } from './errors/api-error'
 import { getDistanceBetweenTwoCoordinates } from '@/utils/get-distance-between-two-coordenates'
+import { MaxDistanceError } from './errors/max-distance-error'
 
 type CheckInCaseRequest = {
   userId: string
@@ -48,7 +49,7 @@ export class CheckInUserCase {
     const maxDistanceInKm = 0.1
 
     if (distance > maxDistanceInKm) {
-      throw new ApiError('User is too far from gym')
+      throw new MaxDistanceError()
     }
 
     const checkInSameday = await this.checkInRepository.findByUserIdOnDate(
