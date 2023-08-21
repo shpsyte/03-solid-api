@@ -5,6 +5,12 @@ import dayjs from 'dayjs'
 export class InMemoryCheckInRepository implements ICheckInRepository {
   public items: CheckIn[] = []
 
+  async findManyByUserId(userId: string, page: number): Promise<CheckIn[]> {
+    return this.items
+      .filter((checkIn) => checkIn.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async create(data: Prisma.CheckInUncheckedCreateInput): Promise<CheckIn> {
     const checkIn = {
       id: crypto.randomUUID(),
