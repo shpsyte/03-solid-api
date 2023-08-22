@@ -5,6 +5,12 @@ import crypto from 'node:crypto'
 export class InMemoryGymRepository implements IGymRepository {
   public items: Gym[] = []
 
+  async searchMany(query: string, page: number) {
+    return this.items
+      .filter((gym) => gym.title.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async findById(gymId: string): Promise<Gym | undefined> {
     return this.items.find((gym) => gym.id === gymId)
   }
