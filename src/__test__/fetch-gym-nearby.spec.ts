@@ -43,6 +43,6 @@ describe('Register User', () => {
       userLongitude: -1,
     })
 
-    expect(gyms).length(0)
+    expect(gyms).toEqual([])
   })
 })
