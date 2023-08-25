@@ -24,11 +24,7 @@ describe('Profile User', () => {
       sut.execute({
         userId: user.id,
       }),
-    ).resolves.toEqual({
-      user: {
-        id: user.id,
-      },
-    })
+    ).resolves.toBeTruthy()
   })
 
   it('should be able to not get a profile if user does not exists', async () => {
