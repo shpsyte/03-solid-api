@@ -1,7 +1,7 @@
 
 @baseUrl = http://localhost:3333
 
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5Aam9obi5jb20iLCJuYW1lIjoiSm9obiBEb2UiLCJyb2xlIjoiTUVNQkVSIiwic3ViIjoiZTc2MzQ4ZWUtZmEzMC00MDFlLTkxMDItZDc2MDk3OGNhZjQzIiwiaWF0IjoxNjkzMDAzMTE1LCJleHAiOjE2OTMwODk1MTV9.gUbpNMLkuCigyJ1_CyTVzwYqYwlXzraTq2jNjNXgcLg
 
 ### Create an account
 POST  {{ baseUrl }}/users
@@ -23,3 +23,10 @@ Content-Type: application/json
      "email" : "john@john.com",
     "password": "123456"
 }
+
+
+### GET profile
+POST  {{ baseUrl }}/me
+Content-Type: application/json
+Authorization: Bearer {{ token }}
+ 

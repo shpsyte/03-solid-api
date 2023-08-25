@@ -1,14 +1,13 @@
 import { IUserRepository } from '@/repositories/users-repository'
 import { ApiError } from './errors/api-error'
+import { User } from '@prisma/client'
 
 type GetUserProfileRequest = {
   userId: string
 }
 
 type GetUserProfileResponse = {
-  user: {
-    id: string | undefined
-  }
+  user: User
 }
 
 export class GetUserProfileUseCase {
@@ -25,9 +24,7 @@ export class GetUserProfileUseCase {
     }
 
     return {
-      user: {
-        id: user.id,
-      },
+      user,
     }
   }
 }
