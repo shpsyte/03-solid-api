@@ -5,15 +5,21 @@ import fastifyJwt from '@fastify/jwt'
 import { userRoutes } from './http/controllers/users/routes'
 import { gymsRoutes } from './http/controllers/gyms/routes'
 import { checkInsRoutes } from './http/controllers/check-ins/route'
-
+import cookie from '@fastify/cookie'
 const app = fastify()
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken', // the cookie name, required for `cookie` sign and verify
+    signed: false, // don't sign the cookie with JWT (not secure)
+  },
   sign: {
-    expiresIn: '24h',
+    expiresIn: '10m',
   },
 })
+
+app.register(cookie)
 
 app.register(userRoutes)
 app.register(gymsRoutes)

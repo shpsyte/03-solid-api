@@ -33,14 +33,31 @@ export async function authenticate(
         },
       },
     )
-
-    return reply.code(200).send({
-      user: {
-        id: user.id,
-        name: user.name,
+    const refreshToken = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+          expiresIn: '7d', // 7 days to expire if user doesn't login
+        },
       },
-      token,
-    })
+    )
+
+    return reply
+      .code(200)
+      .setCookie('refreshToken', refreshToken, {
+        path: '/', // all routes
+        httpOnly: true, // only http request can access this cookie
+        secure: process.env.NODE_ENV === 'production', // only https
+        sameSite: 'lax', // csrf protection, // true, // only same domain, // false, // any domain
+      })
+      .send({
+        user: {
+          id: user.id,
+          name: user.name,
+        },
+        token,
+      })
   } catch (err) {
     if (err instanceof InvalidCredentialError) {
       return reply.code(409).send({
