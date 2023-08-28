@@ -33,8 +33,6 @@ describe('Get User Metrics', () => {
       userId: 'user-01',
     })
 
-    console.log(checkInsCount)
-
     expect(checkInsCount).toBe(2)
   })
 })
