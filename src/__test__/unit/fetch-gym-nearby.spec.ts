@@ -28,7 +28,7 @@ describe('Register User', () => {
     vi.useRealTimers()
   })
 
-  it.only('should be able to fetch gym ', async () => {
+  it('should be able to fetch gym ', async () => {
     const { gyms } = await sut.execute({
       userLatitude: 49.2168449,
       userLongitude: -122.9386039,
