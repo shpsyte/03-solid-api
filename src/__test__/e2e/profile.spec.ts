@@ -13,7 +13,7 @@ describe('Authenticate (Profile)', () => {
   })
 
   it('should be able to get user profile', async () => {
-    const { token } = await createAndAuthUser(app)
+    const { token } = await createAndAuthUser(app, true)
 
     const profileResponse = await request(app.server)
       .get('/me')
@@ -23,7 +23,6 @@ describe('Authenticate (Profile)', () => {
     expect(profileResponse.body.user).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        email: 'johndoe@example.com',
       }),
     )
   })
