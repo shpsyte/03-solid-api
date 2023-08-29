@@ -1,6 +1,7 @@
 import { IUserRepository } from '@/repositories/users-repository'
 import { InvalidCredentialError } from './errors/invalid-credential-error'
 import { compare } from 'bcryptjs'
+import { Role } from '@prisma/client'
 
 type AuthenticateUseCaseRequest = {
   email: string
@@ -11,6 +12,7 @@ type AuthenticateUseCaseResponse = {
   user: {
     id: string
     name: string
+    role: Role
   }
 }
 
@@ -35,6 +37,7 @@ export class AuthenticateUseCase {
       user: {
         id: user.id,
         name: user.name,
+        role: user.role,
       },
     }
   }
